@@ -13,7 +13,9 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "psr/log": "~1.0",
+        "rollbar/rollbar-laravel": "^7.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

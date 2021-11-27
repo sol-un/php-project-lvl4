@@ -3,3 +3,5 @@
 # Task Manager
 
 This is a simple task manager app written in PHP as a pet project under the guidance of Hexlet, a self-education platform. [Learn more about Hexlet (in Russian)](https://ru.hexlet.io/pages/about?utm_source=github&utm_medium=link).
+
+The app is available at https://warm-lowlands-90893.herokuapp.com/

@@ -17,5 +17,5 @@ deploy:
 lint:
 	composer phpcs
 
-migrate-redo:
-	php artisan migrate:reset && php artisan migrate
+migrate-refresh:
+	php artisan migrate:refresh --seed

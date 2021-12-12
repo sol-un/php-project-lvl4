@@ -19,8 +19,5 @@ class StatusSeeder extends Seeder
         Status::create(['name' => 'на тестировании']);
         Status::create(['name' => 'в работе']);
         Status::create(['name' => 'завершен']);
-        Status::factory()
-            ->count(6)
-            ->create();
     }
 }

@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreStatusRequest;
-use App\Http\Requests\UpdateStatusRequest;
 use App\Models\Status;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use \Illuminate\Http\Request;
 
 class StatusController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Status::class, 'status');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Status::class, 'status');
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -31,18 +29,30 @@ class StatusController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('auth');
+        $status = new Status();
+        return view('status.create', compact('status'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreStatusRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreStatusRequest $request)
+    public function store(Request $request)
     {
-        //
+        $this->authorize('auth');
+        $data = $this->validate($request, [
+            'name' => 'required',
+        ]);
+
+        $status = new Status();
+        $status->fill($data);
+        $status->save();
+        flash(__('status.messages.create'))->success();
+        return redirect()
+            ->route('statuses.index');
     }
 
     /**
@@ -64,19 +74,29 @@ class StatusController extends Controller
      */
     public function edit(Status $status)
     {
-        //
+        $this->authorize('auth');
+        return view('status.edit', compact('status'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateStatusRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateStatusRequest $request, Status $status)
+    public function update(Request $request, Status $status)
     {
-        //
+        $this->authorize('auth');
+        $data = $this->validate($request, [
+            'name' => 'required',
+        ]);
+
+        $status->fill($data);
+        $status->save();
+        flash(__('status.messages.update'))->success();
+        return redirect()
+            ->route('statuses.index');
     }
 
     /**
@@ -87,6 +107,12 @@ class StatusController extends Controller
      */
     public function destroy(Status $status)
     {
-        //
+        $this->authorize('auth');
+        if ($status) {
+            $status->delete();
+        }
+        flash(__('status.messages.delete'))->success();
+        return redirect()
+            ->route('statuses.index');
     }
 }

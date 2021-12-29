@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,12 +18,11 @@ use App\Http\Controllers\StatusController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('main');
 
 Route::resources([
     'statuses' => StatusController::class,
+    'tasks' => TaskController::class,
 ]);
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

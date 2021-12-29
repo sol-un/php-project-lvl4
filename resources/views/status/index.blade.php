@@ -25,7 +25,7 @@
     <td>{{ $status->created_at }}</td>
     @auth
     <td>
-      <a class="text-danger text-decoration-none" href="{{ route('statuses.destroy', $status) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">
+      <a class="text-danger text-decoration-none" href="{{ route('statuses.destroy', $status) }}" data-confirm="Вы уверены?" data-method="delete">
         {{__('status.delete')}}
       </a>
       <a class="text-decoration-none" href="{{ route('statuses.edit', $status) }}">

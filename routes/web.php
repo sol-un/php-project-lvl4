@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\StatusController;
+use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskController;
 
 /*
@@ -21,7 +21,7 @@ Route::get('/', function () {
 })->name('main');
 
 Route::resources([
-    'statuses' => StatusController::class,
+    'taskStatuses' => TaskStatusController::class,
     'tasks' => TaskController::class,
 ]);
 

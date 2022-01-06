@@ -1,7 +1,7 @@
 <?php
 
 return [
-  'statuses' => 'Статусы',
+  'taskStatuses' => 'Статусы',
   'create' => 'Создать статус',
   'id' => 'ID',
   'name' => 'Имя',
@@ -9,7 +9,7 @@ return [
   'actions' => 'Действия',
   'create' => 'Создать',
   'edit' => 'Изменить',
-  'editStatus' => 'Изменение статуса',
+  'editTaskStatus' => 'Изменение статуса',
   'delete' => 'Удалить',
   'messages' => [
     'create' => 'Статус успешно создан',

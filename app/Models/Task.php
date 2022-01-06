@@ -16,9 +16,9 @@ class Task extends Model
         'assigned_to_id'
     ];
 
-    public function status()
+    public function taskStatus()
     {
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(TaskStatus::class);
     }
 
     public function creator()

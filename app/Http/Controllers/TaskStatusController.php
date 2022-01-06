@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Status;
+use App\Models\TaskStatus;
 use \Illuminate\Http\Request;
 
-class StatusController extends Controller
+class TaskStatusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class StatusController extends Controller
      */
     public function index()
     {
-        $statuses = Status::all();
-        return view('status.index', compact('statuses'));
+        $taskStatuses = TaskStatus::all();
+        return view('taskStatus.index', compact('taskStatuses'));
     }
 
     /**
@@ -26,8 +26,8 @@ class StatusController extends Controller
     public function create()
     {
         $this->authorize('auth');
-        $status = new Status();
-        return view('status.create', compact('status'));
+        $taskStatus = new TaskStatus();
+        return view('taskStatus.create', compact('taskStatus'));
     }
 
     /**
@@ -43,21 +43,21 @@ class StatusController extends Controller
             'name' => 'required',
         ]);
 
-        $status = new Status();
-        $status->fill($data);
-        $status->save();
-        flash(__('status.messages.create'))->success();
+        $taskStatus = new TaskStatus();
+        $taskStatus->fill($data);
+        $taskStatus->save();
+        flash(__('taskStatus.messages.create'))->success();
         return redirect()
-            ->route('statuses.index');
+            ->route('taskStatuses.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\TaskStatus  $taskStatus
      * @return \Illuminate\Http\Response
      */
-    public function show(Status $status)
+    public function show(TaskStatus $taskStatus)
     {
         //
     }
@@ -65,50 +65,50 @@ class StatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\TaskStatus  $taskStatus
      * @return \Illuminate\Http\Response
      */
-    public function edit(Status $status)
+    public function edit(TaskStatus $taskStatus)
     {
         $this->authorize('auth');
-        return view('status.edit', compact('status'));
+        return view('taskStatus.edit', compact('taskStatus'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\TaskStatus  $taskStatus
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Status $status)
+    public function update(Request $request, TaskStatus $taskStatus)
     {
         $this->authorize('auth');
         $data = $this->validate($request, [
             'name' => 'required',
         ]);
 
-        $status->fill($data);
-        $status->save();
-        flash(__('status.messages.update'))->success();
+        $taskStatus->fill($data);
+        $taskStatus->save();
+        flash(__('taskStatus.messages.update'))->success();
         return redirect()
-            ->route('statuses.index');
+            ->route('taskStatuses.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\TaskStatus  $taskStatus
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Status $status)
+    public function destroy(TaskStatus $taskStatus)
     {
         $this->authorize('auth');
-        if ($status) {
-            $status->delete();
+        if ($taskStatus) {
+            $taskStatus->delete();
         }
-        flash(__('status.messages.delete'))->success();
-                return redirect()
-            ->route('statuses.index');
+        flash(__('taskStatus.messages.delete'))->success();
+        return redirect()
+            ->route('taskStatuses.index');
     }
 }

@@ -4,7 +4,7 @@ return [
     'tasks' => 'Задачи',
     'create' => 'Создать задачу',
     'id' => 'ID',
-    'status' => 'Статус',
+    'taskStatus' => 'Статус',
     'name' => 'Имя',
     'creator' => 'Автор',
     'owner' => 'Исполнитель',

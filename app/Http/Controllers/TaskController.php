@@ -2,17 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Status;
-use \Illuminate\Http\Request;
+use App\Models\Task;
+use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Log;
-
-class StatusController extends Controller
+class TaskController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->authorizeResource(Status::class, 'status');
-    // }
     /**
      * Display a listing of the resource.
      *
@@ -20,8 +14,8 @@ class StatusController extends Controller
      */
     public function index()
     {
-        $statuses = Status::all();
-        return view('status.index', compact('statuses'));
+        $tasks = Task::all();
+        return view('tasks.index', compact('tasks'));
     }
 
     /**
@@ -32,8 +26,8 @@ class StatusController extends Controller
     public function create()
     {
         $this->authorize('auth');
-        $status = new Status();
-        return view('status.create', compact('status'));
+        $task = new Task();
+        return view('tasks.create', compact('task'));
     }
 
     /**
@@ -47,23 +41,25 @@ class StatusController extends Controller
         $this->authorize('auth');
         $data = $this->validate($request, [
             'name' => 'required',
+            'status_id' => 'required',
+            'created_by_id' => 'required',
         ]);
 
-        $status = new Status();
-        $status->fill($data);
-        $status->save();
-        flash(__('status.messages.create'))->success();
+        $task = new Task();
+        $task->fill($data);
+        $task->save();
+        flash(__('tasks.messages.create'))->success();
         return redirect()
-            ->route('statuses.index');
+            ->route('tasks.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function show(Status $status)
+    public function show(Task $task)
     {
         //
     }
@@ -71,50 +67,52 @@ class StatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function edit(Status $status)
+    public function edit(Task $task)
     {
         $this->authorize('auth');
-        return view('status.edit', compact('status'));
+        return view('tasks.edit', compact('task'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Status $status)
+    public function update(Request $request, Task  $task)
     {
         $this->authorize('auth');
         $data = $this->validate($request, [
             'name' => 'required',
+            'status_id' => 'required',
+            'created_by_id' => 'required',
         ]);
 
-        $status->fill($data);
-        $status->save();
-        flash(__('status.messages.update'))->success();
+        $task->fill($data);
+        $task->save();
+        flash(__('tasks.messages.update'))->success();
         return redirect()
-            ->route('statuses.index');
+            ->route('tasks.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Status  $status
+     * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Status $status)
+    public function destroy(Task  $task)
     {
         $this->authorize('auth');
-        if ($status) {
-            $status->delete();
+        if ($task) {
+            $task->delete();
         }
-        flash(__('status.messages.delete'))->success();
+        flash(__('tasks.messages.delete'))->success();
         return redirect()
-            ->route('statuses.index');
+            ->route('tasks.index');
     }
 }

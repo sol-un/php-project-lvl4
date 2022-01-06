@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class StatusFactory extends Factory
+class TaskFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -15,6 +15,7 @@ class StatusFactory extends Factory
     {
         return [
             'name' => $this->faker->word(),
+            'description' => $this->faker->paragraph(),
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\TaskStatus;
 use App\Models\User;
+use App\Models\Task;
 
 class TaskStatusControllerTest extends TestCase
 {
@@ -13,8 +14,10 @@ class TaskStatusControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        TaskStatus::factory()->count(2)->make();
         $this->user = User::factory()->create();
+        User::factory()->count(10)->create();
+        TaskStatus::factory()->count(5)->create();
+        Task::factory()->count(10)->create();
     }
 
     public function testIndex()

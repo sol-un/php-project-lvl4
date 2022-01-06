@@ -11,7 +11,7 @@
     <thead>
         <tr>
             <th>{{__('task.id')}}</th>
-            <th>{{__('task.taskStatus')}}</th>
+            <th>{{__('task.status')}}</th>
             <th>{{__('task.name')}}</th>
             <th>{{__('task.creator')}}</th>
             <th>{{__('task.owner')}}</th>
@@ -24,16 +24,24 @@
     @foreach($tasks as $task)
     <tr>
         <td>{{ $task->id }}</td>
-        <td>{{ $task->taskStatus->name }}</td>
-        <td>{{ $task->name }}</td>
+        <td>{{ $task->status->name }}</td>
+        <td>
+            <a class="text-decoration-none" href="{{ route('tasks.show', $task) }}">
+                {{ $task->name }}
+            </a>
+        </td>
         <td>{{ $task->creator->name }}</td>
         <td>{{ optional($task->owner)->name }}</td>
         <td>{{ $task->created_at }}</td>
         @auth
         <td>
-            <a class="text-danger text-decoration-none" href="{{ route('tasks.destroy', $task) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">
-                {{__('task.delete')}}
-            </a>
+            @can('delete-task', $task)
+            <div>
+                <a class="text-danger text-decoration-none" href="{{ route('tasks.destroy', $task) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">
+                    {{__('task.delete')}}
+                </a>
+            </div>
+            @endcan
             <a class="text-decoration-none" href="{{ route('tasks.edit', $task) }}">
                 {{__('task.edit')}}
             </a>

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Task;
+use App\Models\TaskStatus;
 use App\Models\User;
 
 class TaskControllerTest extends TestCase
@@ -13,8 +14,10 @@ class TaskControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Task::factory()->count(2)->make();
         $this->user = User::factory()->create();
+        User::factory()->count(10)->create();
+        TaskStatus::factory()->count(5)->create();
+        Task::factory()->count(10)->create();
     }
 
     public function testIndex()
@@ -60,7 +63,7 @@ class TaskControllerTest extends TestCase
     public function testDestroy()
     {
         $task = Task::factory()->create();
-        $response = $this->actingAs($this->user)->delete(route('tasks.destroy', [$task]));
+        $response = $this->actingAs($task->creator)->delete(route('tasks.destroy', [$task]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
 use Illuminate\Http\Request;
+use App\Models\Task;
+use App\Models\TaskStatus;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -15,7 +18,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::all();
-        return view('tasks.index', compact('tasks'));
+        return view('task.index', compact('tasks'));
     }
 
     /**
@@ -27,7 +30,9 @@ class TaskController extends Controller
     {
         $this->authorize('auth');
         $task = new Task();
-        return view('tasks.create', compact('task'));
+        $taskStatuses = TaskStatus::pluck('name', 'id');
+        $users = User::pluck('name', 'id');
+        return view('task.create', compact('task', 'taskStatuses', 'users'));
     }
 
     /**
@@ -39,16 +44,16 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $this->authorize('auth');
-        $data = $this->validate($request, [
+        $this->validate($request, [
             'name' => 'required',
             'status_id' => 'required',
-            'created_by_id' => 'required',
         ]);
 
         $task = new Task();
-        $task->fill($data);
+        $task->fill($request->all());
+        $task->created_by_id = Auth::id();
         $task->save();
-        flash(__('tasks.messages.create'))->success();
+        flash(__('task.messages.create'))->success();
         return redirect()
             ->route('tasks.index');
     }
@@ -61,7 +66,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return view('task.show', compact('task'));
     }
 
     /**
@@ -73,7 +78,9 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         $this->authorize('auth');
-        return view('tasks.edit', compact('task'));
+        $taskStatuses = TaskStatus::pluck('name', 'id');
+        $users = User::pluck('name', 'id');
+        return view('task.edit', compact('task', 'taskStatuses', 'users'));
     }
 
     /**
@@ -83,18 +90,17 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task  $task)
+    public function update(Request $request, Task $task)
     {
         $this->authorize('auth');
-        $data = $this->validate($request, [
+        $this->validate($request, [
             'name' => 'required',
             'status_id' => 'required',
-            'created_by_id' => 'required',
         ]);
 
-        $task->fill($data);
+        $task->fill($request->all());
         $task->save();
-        flash(__('tasks.messages.update'))->success();
+        flash(__('task.messages.update'))->success();
         return redirect()
             ->route('tasks.index');
     }
@@ -105,9 +111,10 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Task  $task)
+    public function destroy(Task $task)
     {
         $this->authorize('auth');
+        $this->authorize('delete-task', $task);
         if ($task) {
             $task->delete();
         }

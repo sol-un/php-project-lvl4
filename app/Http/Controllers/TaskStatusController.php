@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
-use \Illuminate\Http\Request;
+use Illuminate\Http\Request;
 
 class TaskStatusController extends Controller
 {
@@ -104,10 +104,15 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $taskStatus)
     {
         $this->authorize('auth');
-        if ($taskStatus) {
+        $relatedTasks = $taskStatus->tasks();
+
+        if ($taskStatus && empty($relatedTasks)) {
             $taskStatus->delete();
+            flash(__('taskStatus.messages.delete'))->success();
+        } else if (!empty($relatedTasks)) {
+            flash(__('taskStatus.errors.delete'))->error();
         }
-        flash(__('taskStatus.messages.delete'))->success();
+
         return redirect()
             ->route('taskStatuses.index');
     }

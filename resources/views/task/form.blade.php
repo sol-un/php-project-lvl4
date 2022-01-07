@@ -7,7 +7,7 @@
 </div>
 <div class="form-group mb-3">
   {{ Form::label('description', __('task.description')) }}
-  {{ Form::text('description', null, ['class' => 'form-control ' . ($errors->has('description') ? 'is-invalid' : null)]) }}
+  {{ Form::textarea('description', null, ['class' => 'form-control ' . ($errors->has('description') ? 'is-invalid' : null)]) }}
   @error('description')
   <div class="invalid-feedback">{{ $message }}</div>
   @enderror
@@ -25,4 +25,8 @@
   @error('assigned_to_id')
   <div class="invalid-feedback">{{ $message }}</div>
   @enderror
+</div>
+<div class="form-group mb-3">
+  {{ Form::label('labels', __('task.labels')) }}
+  {{ Form::select('labels', $labels, null, ['class' => 'form-control', 'multiple' => true, 'name'=>'labels[]']) }}
 </div>

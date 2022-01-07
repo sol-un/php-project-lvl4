@@ -8,6 +8,7 @@ return [
     'status' => 'Статус',
     'name' => 'Имя',
     'description' => 'Описание',
+    'labels' => 'Метки',
     'creator' => 'Автор',
     'owner' => 'Исполнитель',
     'created_at' => 'Дата создания',

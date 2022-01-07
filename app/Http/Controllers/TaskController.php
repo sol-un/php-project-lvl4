@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
@@ -30,9 +31,10 @@ class TaskController extends Controller
     {
         $this->authorize('auth');
         $task = new Task();
+        $labels = Label::pluck('name', 'id');
         $taskStatuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
-        return view('task.create', compact('task', 'taskStatuses', 'users'));
+        return view('task.create', compact('task', 'labels', 'taskStatuses', 'users'));
     }
 
     /**
@@ -50,9 +52,10 @@ class TaskController extends Controller
         ]);
 
         $task = new Task();
-        $task->fill($request->all());
         $task->created_by_id = Auth::id();
+        $task->fill($request->all());
         $task->save();
+        $task->labels()->attach($request->labels);
         flash(__('task.messages.create'))->success();
         return redirect()
             ->route('tasks.index');
@@ -78,9 +81,10 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         $this->authorize('auth');
+        $labels = Label::pluck('name', 'id');
         $taskStatuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
-        return view('task.edit', compact('task', 'taskStatuses', 'users'));
+        return view('task.edit', compact('task', 'labels', 'taskStatuses', 'users'));
     }
 
     /**
@@ -99,6 +103,7 @@ class TaskController extends Controller
         ]);
 
         $task->fill($request->all());
+        $task->labels()->sync($request->labels);
         $task->save();
         flash(__('task.messages.update'))->success();
         return redirect()
@@ -116,6 +121,7 @@ class TaskController extends Controller
         $this->authorize('auth');
         $this->authorize('delete-task', $task);
         if ($task) {
+            $task->labels()->detach();
             $task->delete();
         }
         flash(__('tasks.messages.delete'))->success();

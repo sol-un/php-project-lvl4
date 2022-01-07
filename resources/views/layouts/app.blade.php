@@ -37,10 +37,13 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('taskStatuses.index') }}">{{ __('taskStatus.taskStatuses') }}</a>
+                            <a class="nav-link {{ Route::is('tasks.index') ? 'active' : '' }}" href="{{ route('tasks.index') }}">{{ __('task.tasks') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('tasks.index') }}">{{ __('task.tasks') }}</a>
+                            <a class="nav-link {{ Route::is('taskStatuses.index') ? 'active' : '' }}" href="{{ route('taskStatuses.index') }}">{{ __('taskStatus.taskStatuses') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Route::is('labels.index') ? 'active' : '' }}" href="{{ route('labels.index') }}">{{ __('label.labels') }}</a>
                         </li>
                     </ul>
 

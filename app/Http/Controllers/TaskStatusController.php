@@ -104,12 +104,11 @@ class TaskStatusController extends Controller
     public function destroy(TaskStatus $taskStatus)
     {
         $this->authorize('auth');
-        $relatedTasks = $taskStatus->tasks();
 
-        if ($taskStatus && empty($relatedTasks)) {
+        if ($taskStatus->tasks->isEmpty()) {
             $taskStatus->delete();
             flash(__('taskStatus.messages.delete'))->success();
-        } else if (!empty($relatedTasks)) {
+        } else {
             flash(__('taskStatus.errors.delete'))->error();
         }
 

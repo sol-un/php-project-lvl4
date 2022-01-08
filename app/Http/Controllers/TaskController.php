@@ -132,11 +132,10 @@ class TaskController extends Controller
     {
         $this->authorize('auth');
         $this->authorize('delete-task', $task);
-        if ($task) {
-            $task->labels()->detach();
-            $task->delete();
-        }
+
+        $task->delete();
         flash(__('tasks.messages.delete'))->success();
+
         return redirect()
             ->route('tasks.index');
     }

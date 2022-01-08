@@ -104,12 +104,11 @@ class LabelController extends Controller
     public function destroy(Label $label)
     {
         $this->authorize('auth');
-        $relatedTasks = $label->tasks();
 
-        if ($label && empty($relatedTasks)) {
+        if ($label->tasks->isEmpty()) {
             $label->delete();
             flash(__('label.messages.delete'))->success();
-        } else if (!empty($relatedTasks)) {
+        } else {
             flash(__('label.errors.delete'))->error();
         }
 

@@ -2,7 +2,6 @@
 
 @section('content')
 <h1 class="mb-5">{{__('task.tasks')}}</h1>
-@auth
 <div class="d-flex mb-3">
     <div>
         {{Form::open(['url' => route('tasks.index'), 'method' => 'GET'])}}
@@ -18,17 +17,18 @@
             </div>
             <div class="col">
                 {{ Form::submit(__('task.filter'), ['class' => 'btn btn-outline-primary me-2']) }}
-                {{ Form::close() }}
             </div>
         </div>
+        {{ Form::close() }}
     </div>
+    @auth
     <div class="ms-auto">
         <a href="{{ route('tasks.create') }}" class="btn btn-primary">
             {{__('task.create')}}
         </a>
     </div>
+    @endauth
 </div>
-@endauth
 <table class="table me-2">
     <thead>
         <tr>
@@ -59,7 +59,7 @@
         <td>
             @can('delete-task', $task)
             <div>
-                <a class="text-danger text-decoration-none" href="{{ route('tasks.destroy', $task) }}" data-confirm="Вы уверены?" data-method="delete" rel="nofollow">
+                <a rel="nofollow" class="text-danger text-decoration-none" href="{{ route('tasks.destroy', $task) }}" data-confirm="Вы уверены?" data-method="delete">
                     {{__('task.delete')}}
                 </a>
             </div>

@@ -9,7 +9,7 @@ use App\Models\User;
 
 class TaskControllerTest extends TestCase
 {
-    private $user;
+    private User $user;
 
     protected function setUp(): void
     {
@@ -41,7 +41,10 @@ class TaskControllerTest extends TestCase
 
     public function testStore()
     {
-        $factoryData = Task::factory()->make()->only(['name', 'description', 'status_id']);
+        $factoryData = Task::factory()
+            ->make(['name' => 'mytesttask'])
+            ->only(['name', 'description', 'status_id']);
+
         $response = $this->actingAs($this->user)->post(route('tasks.store'), $factoryData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
@@ -52,7 +55,10 @@ class TaskControllerTest extends TestCase
     public function testUpdate()
     {
         $task = Task::factory()->create();
-        $factoryData = Task::factory()->make()->only(['name', 'description', 'status_id']);
+        $factoryData = Task::factory()
+            ->make(['name' => 'mytesttask'])
+            ->only(['name', 'description', 'status_id']);
+
         $response = $this->actingAs($this->user)->patch(route('tasks.update', $task), $factoryData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
@@ -62,12 +68,9 @@ class TaskControllerTest extends TestCase
 
     public function testDestroy()
     {
-        $task = Task::factory()->create();
+        $task = Task::factory()->create(['created_by_id' => $this->user->id]);
 
-        // $task->creator()->associate($this->user);
-        // $response = $this->actingAs($this->user)->delete(route('tasks.destroy', [$task]));
-
-        $response = $this->actingAs($task->creator)->delete(route('tasks.destroy', [$task]));
+        $response = $this->actingAs($this->user)->delete(route('tasks.destroy', [$task]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 

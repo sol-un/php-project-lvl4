@@ -39,27 +39,22 @@ class LabelController extends Controller
     public function store(Request $request)
     {
         $this->authorize('auth');
-        $data = $this->validate($request, [
-            'name' => 'required',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|unique:labels',
+            ],
+            [
+                'name.unique' => __('label.errors.name_unique')
+            ]
+        );
 
         $label = new Label();
-        $label->fill($data);
+        $label->fill($request->all());
         $label->save();
         flash(__('label.messages.create'))->success();
         return redirect()
             ->route('labels.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Label  $label
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Label $label)
-    {
-        //
     }
 
     /**
@@ -84,9 +79,15 @@ class LabelController extends Controller
     public function update(Request $request, Label $label)
     {
         $this->authorize('auth');
-        $this->validate($request, [
-            'name' => 'required',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|unique:labels',
+            ],
+            [
+                'name.unique' => __('label.errors.name_unique')
+            ]
+        );
 
         $label->fill($request->all());
         $label->save();
@@ -105,7 +106,7 @@ class LabelController extends Controller
     {
         $this->authorize('auth');
 
-        if ($label->tasks->isEmpty()) {
+        if ($label->tasks()->get()->isEmpty()) {
             $label->delete();
             flash(__('label.messages.delete'))->success();
         } else {

@@ -3,8 +3,8 @@
 @section('content')
 <h1 class="mb-5">{{__('taskStatus.taskStatuses')}}</h1>
 @auth
-<a href="{{ route('taskStatuses.create') }}" class="btn btn-primary">
-  {{__('taskStatus.create')}}
+<a href="{{ route('task_statuses.create') }}" class="btn btn-primary">
+  {{__('taskStatus.createButton')}}
 </a>
 @endauth
 <table class="table mt-2">
@@ -22,13 +22,13 @@
   <tr>
     <td>{{ $taskStatus->id }}</td>
     <td>{{ $taskStatus->name }}</td>
-    <td>{{ $taskStatus->created_at }}</td>
+    <td>{{ $taskStatus->created_at->format('d.m.Y') }}</td>
     @auth
     <td>
-      <a class="text-danger text-decoration-none" href="{{ route('taskStatuses.destroy', $taskStatus) }}" data-confirm="Вы уверены?" data-method="delete">
+      <a class="text-danger text-decoration-none" href="{{ route('task_statuses.destroy', $taskStatus) }}" data-confirm="Вы уверены?" data-method="delete">
         {{__('taskStatus.delete')}}
       </a>
-      <a class="text-decoration-none" href="{{ route('taskStatuses.edit', $taskStatus) }}">
+      <a class="text-decoration-none" href="{{ route('task_statuses.edit', $taskStatus) }}">
         {{__('taskStatus.edit')}}
       </a>
     </td>

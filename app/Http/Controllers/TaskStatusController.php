@@ -39,27 +39,22 @@ class TaskStatusController extends Controller
     public function store(Request $request)
     {
         $this->authorize('auth');
-        $data = $this->validate($request, [
-            'name' => 'required',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|unique:task_statuses',
+            ],
+            [
+                'name.unique' => __('taskStatus.errors.name_unique')
+            ]
+        );
 
         $taskStatus = new TaskStatus();
-        $taskStatus->fill($data);
+        $taskStatus->fill($request->all());
         $taskStatus->save();
         flash(__('taskStatus.messages.create'))->success();
         return redirect()
-            ->route('taskStatuses.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TaskStatus  $taskStatus
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TaskStatus $taskStatus)
-    {
-        //
+            ->route('task_statuses.index');
     }
 
     /**
@@ -84,15 +79,21 @@ class TaskStatusController extends Controller
     public function update(Request $request, TaskStatus $taskStatus)
     {
         $this->authorize('auth');
-        $data = $this->validate($request, [
-            'name' => 'required',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|unique:task_statuses',
+            ],
+            [
+                'name.unique' => __('taskStatus.errors.name_unique')
+            ]
+        );
 
-        $taskStatus->fill($data);
+        $taskStatus->fill($request->all());
         $taskStatus->save();
         flash(__('taskStatus.messages.update'))->success();
         return redirect()
-            ->route('taskStatuses.index');
+            ->route('task_statuses.index');
     }
 
     /**
@@ -105,7 +106,7 @@ class TaskStatusController extends Controller
     {
         $this->authorize('auth');
 
-        if ($taskStatus->tasks->isEmpty()) {
+        if ($taskStatus->tasks()->get()->isEmpty()) {
             $taskStatus->delete();
             flash(__('taskStatus.messages.delete'))->success();
         } else {
@@ -113,6 +114,6 @@ class TaskStatusController extends Controller
         }
 
         return redirect()
-            ->route('taskStatuses.index');
+            ->route('task_statuses.index');
     }
 }

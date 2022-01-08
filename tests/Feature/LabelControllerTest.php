@@ -10,7 +10,7 @@ use App\Models\User;
 
 class LabelControllerTest extends TestCase
 {
-    private $user;
+    private User $user;
 
     protected function setUp(): void
     {
@@ -43,7 +43,10 @@ class LabelControllerTest extends TestCase
 
     public function testStore()
     {
-        $factoryData = label::factory()->make()->only(['name']);
+        $factoryData = label::factory()
+            ->make(['name' => 'mytestlabel'])
+            ->only(['name']);
+
         $response = $this->actingAs($this->user)->post(route('labels.store'), $factoryData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
@@ -54,7 +57,10 @@ class LabelControllerTest extends TestCase
     public function testUpdate()
     {
         $label = label::factory()->create();
-        $factoryData = label::factory()->make()->only(['name']);
+        $factoryData = label::factory()
+            ->make(['name' => 'mytestlabel'])
+            ->only(['name']);
+
         $response = $this->actingAs($this->user)->patch(route('labels.update', $label), $factoryData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();

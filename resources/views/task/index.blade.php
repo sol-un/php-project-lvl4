@@ -24,7 +24,7 @@
     @auth
     <div class="ms-auto">
         <a href="{{ route('tasks.create') }}" class="btn btn-primary">
-            {{__('task.create')}}
+            {{__('task.createButton')}}
         </a>
     </div>
     @endauth
@@ -54,7 +54,7 @@
         </td>
         <td>{{ $task->creator->name }}</td>
         <td>{{ optional($task->owner)->name }}</td>
-        <td>{{ $task->created_at }}</td>
+        <td>{{ $task->created_at->format('d.m.Y') }}</td>
         @auth
         <td>
             @can('delete-task', $task)

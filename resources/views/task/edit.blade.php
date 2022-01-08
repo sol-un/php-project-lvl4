@@ -7,7 +7,7 @@
 {{ Form::model($task, ['url' => route('tasks.update', $task), 'method' => 'PATCH', 'class' => 'w-50']) }}
 
 @include('task.form')
-{{ Form::submit(__('task.edit'), ['class' => 'btn btn-primary mt-3']) }}
+{{ Form::submit(__('task.update'), ['class' => 'btn btn-primary mt-3']) }}
 {{ Form::close() }}
 
 @endsection

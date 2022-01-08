@@ -40,7 +40,7 @@
                             <a class="nav-link {{ Route::is('tasks.index') ? 'active' : '' }}" href="{{ route('tasks.index') }}">{{ __('task.tasks') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ Route::is('taskStatuses.index') ? 'active' : '' }}" href="{{ route('taskStatuses.index') }}">{{ __('taskStatus.taskStatuses') }}</a>
+                            <a class="nav-link {{ Route::is('task_statuses.index') ? 'active' : '' }}" href="{{ route('task_statuses.index') }}">{{ __('taskStatus.taskStatuses') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ Route::is('labels.index') ? 'active' : '' }}" href="{{ route('labels.index') }}">{{ __('label.labels') }}</a>

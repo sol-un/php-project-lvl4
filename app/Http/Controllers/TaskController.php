@@ -58,16 +58,23 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $this->authorize('auth');
-        $this->validate($request, [
-            'name' => 'required',
-            'status_id' => 'required',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|unique:tasks',
+                'status_id' => 'required',
+            ],
+            [
+                'name.unique' => __('task.errors.name_unique')
+            ]
+        );
 
         $task = new Task();
-        $task->created_by_id = Auth::id();
         $task->fill($request->all());
+        $task->creator()->associate(Auth::id());
         $task->save();
         $task->labels()->attach($request->labels);
+
         flash(__('task.messages.create'))->success();
         return redirect()
             ->route('tasks.index');
@@ -109,10 +116,16 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $this->authorize('auth');
-        $this->validate($request, [
-            'name' => 'required',
-            'status_id' => 'required',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'name' => 'required|unique:tasks',
+                'status_id' => 'required',
+            ],
+            [
+                'name.unique' => __('task.errors.name_unique')
+            ]
+        );
 
         $task->fill($request->all());
         $task->labels()->sync($request->labels);
@@ -128,13 +141,13 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Task $task)
+    public function destroy(Request $request, Task $task)
     {
         $this->authorize('auth');
-        $this->authorize('delete-task', $task);
-
-        $task->delete();
-        flash(__('tasks.messages.delete'))->success();
+        if ($request->user()->can('delete-task', $task)) {
+            $task->delete();
+            flash(__('task.messages.delete'))->success();
+        }
 
         return redirect()
             ->route('tasks.index');

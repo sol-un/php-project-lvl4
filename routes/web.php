@@ -24,7 +24,7 @@ Route::get('/', function () {
 Route::resources([
     'labels' => LabelController::class,
     'tasks' => TaskController::class,
-    'taskStatuses' => TaskStatusController::class,
+    'task_statuses' => TaskStatusController::class,
 ]);
 
 Auth::routes();

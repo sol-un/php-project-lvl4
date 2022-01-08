@@ -5,7 +5,7 @@
 @enderror
 <br>
 {{ Form::label('description', __('label.description')) }}
-{{ Form::text('description', null, ['class' => 'form-control ' . ($errors->has('description') ? 'is-invalid' : null)]) }}
+{{ Form::textArea('description', null, ['class' => 'form-control ' . ($errors->has('description') ? 'is-invalid' : null)]) }}
 @error('description')
 <div class="invalid-feedback">{{ $message }}</div>
 @enderror

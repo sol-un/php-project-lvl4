@@ -4,7 +4,7 @@
 <h1 class="mb-5">{{__('label.labels')}}</h1>
 @auth
 <a href="{{ route('labels.create') }}" class="btn btn-primary">
-  {{__('label.create')}}
+  {{__('label.createButton')}}
 </a>
 @endauth
 <table class="table mt-2">
@@ -24,7 +24,7 @@
     <td>{{ $label->id }}</td>
     <td>{{ $label->name }}</td>
     <td>{{ $label->description }}</td>
-    <td>{{ $label->created_at }}</td>
+    <td>{{ $label->created_at->format('d.m.Y') }}</td>
     @auth
     <td>
       <a class="text-danger text-decoration-none" href="{{ route('labels.destroy', $label) }}" data-confirm="Вы уверены?" data-method="delete">

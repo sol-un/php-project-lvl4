@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 class LabelController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Label::class, 'label');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -25,7 +35,6 @@ class LabelController extends Controller
      */
     public function create()
     {
-        $this->authorize('auth');
         $label = new Label();
         return view('label.create', compact('label'));
     }
@@ -38,7 +47,6 @@ class LabelController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('auth');
         $this->validate(
             $request,
             [
@@ -65,7 +73,6 @@ class LabelController extends Controller
      */
     public function edit(Label $label)
     {
-        $this->authorize('auth');
         return view('label.edit', compact('label'));
     }
 
@@ -78,11 +85,10 @@ class LabelController extends Controller
      */
     public function update(Request $request, Label $label)
     {
-        $this->authorize('auth');
         $this->validate(
             $request,
             [
-                'name' => 'required|unique:labels',
+                'name' => 'required|unique:labels,name,' . $label->id,
             ],
             [
                 'name.unique' => __('label.errors.name_unique')
@@ -104,8 +110,6 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        $this->authorize('auth');
-
         if ($label->tasks()->get()->isEmpty()) {
             $label->delete();
             flash(__('label.messages.delete'))->success();

@@ -57,7 +57,7 @@
         <td>{{ $task->created_at->format('d.m.Y') }}</td>
         @auth
         <td>
-            @can('delete-task', $task)
+            @can('delete', $task)
             <div>
                 <a rel="nofollow" class="text-danger text-decoration-none" href="{{ route('tasks.destroy', $task) }}" data-confirm="Вы уверены?" data-method="delete">
                     {{__('task.delete')}}

@@ -5,8 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
 
+
 class TaskStatusController extends Controller
 {
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(TaskStatus::class, 'task_status');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +36,6 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
-        $this->authorize('auth');
         $taskStatus = new TaskStatus();
         return view('taskStatus.create', compact('taskStatus'));
     }
@@ -38,7 +48,6 @@ class TaskStatusController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('auth');
         $this->validate(
             $request,
             [
@@ -65,7 +74,6 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
-        $this->authorize('auth');
         return view('taskStatus.edit', compact('taskStatus'));
     }
 
@@ -78,11 +86,10 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
-        $this->authorize('auth');
         $this->validate(
             $request,
             [
-                'name' => 'required|unique:task_statuses',
+                'name' => 'required|unique:task_statuses,name,' . $taskStatus->id,
             ],
             [
                 'name.unique' => __('taskStatus.errors.name_unique')
@@ -104,8 +111,6 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        $this->authorize('auth');
-
         if ($taskStatus->tasks()->get()->isEmpty()) {
             $taskStatus->delete();
             flash(__('taskStatus.messages.delete'))->success();

@@ -14,6 +14,16 @@ use Spatie\QueryBuilder\AllowedFilter;
 class TaskController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Task::class, 'task');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -41,7 +51,6 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $this->authorize('auth');
         $task = new Task();
         $labels = Label::pluck('name', 'id');
         $taskStatuses = TaskStatus::pluck('name', 'id');
@@ -57,7 +66,6 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('auth');
         $this->validate(
             $request,
             [
@@ -99,7 +107,6 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        $this->authorize('auth');
         $labels = Label::pluck('name', 'id');
         $taskStatuses = TaskStatus::pluck('name', 'id');
         $users = User::pluck('name', 'id');
@@ -115,11 +122,10 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        $this->authorize('auth');
         $this->validate(
             $request,
             [
-                'name' => 'required|unique:tasks',
+                'name' => 'required|unique:tasks,name,' . $task->id,
                 'status_id' => 'required',
             ],
             [
@@ -143,8 +149,7 @@ class TaskController extends Controller
      */
     public function destroy(Request $request, Task $task)
     {
-        $this->authorize('auth');
-        if ($request->user()->can('delete-task', $task)) {
+        if ($request->user()->can('delete', $task)) {
             $task->delete();
             flash(__('task.messages.delete'))->success();
         }

@@ -15,8 +15,8 @@ class CreateLabelTaskTable extends Migration
     {
         Schema::create('label_task', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('label_id');
-            $table->integer('task_id');
+            $table->foreignId('label_id')->constrained('labels');
+            $table->foreignId('task_id')->constrained('tasks');
         });
     }
 
@@ -27,8 +27,6 @@ class CreateLabelTaskTable extends Migration
      */
     public function down()
     {
-        Schema::table('label_task', function (Blueprint $table) {
-            Schema::dropIfExists('label_task');
-        });
+        Schema::dropIfExists('label_task');
     }
 }

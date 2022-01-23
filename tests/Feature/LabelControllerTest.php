@@ -26,6 +26,7 @@ class LabelControllerTest extends TestCase
     {
         $response = $this->get(route('labels.index'));
         $response->assertOk();
+        $response->assertSee(Label::all()->first()->name);
     }
 
     public function testCreate()
@@ -39,6 +40,7 @@ class LabelControllerTest extends TestCase
         $label = label::factory()->create();
         $response = $this->actingAs($this->user)->get(route('labels.edit', [$label]));
         $response->assertOk();
+        $response->assertSee($label->name);
     }
 
     public function testStore()

@@ -24,7 +24,6 @@ class TaskStatusControllerTest extends TestCase
     {
         $response = $this->get(route('task_statuses.index'));
         $response->assertOk();
-        $response->assertSee(TaskStatus::all()->first()->name);
     }
 
     public function testCreate()
@@ -38,7 +37,6 @@ class TaskStatusControllerTest extends TestCase
         $taskStatus = TaskStatus::factory()->create();
         $response = $this->actingAs($this->user)->get(route('task_statuses.edit', [$taskStatus]));
         $response->assertOk();
-        $response->assertSee($taskStatus->name);
     }
 
     public function testStore()

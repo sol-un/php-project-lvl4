@@ -26,6 +26,13 @@ class TaskControllerTest extends TestCase
         $response->assertOk();
     }
 
+    public function testShow()
+    {
+        $task = Task::factory()->create();
+        $response = $this->actingAs($this->user)->get(route('tasks.show', $task));
+        $response->assertOk();
+    }
+
     public function testCreate()
     {
         $response = $this->actingAs($this->user)->get(route('tasks.create'));

@@ -1,4 +1,5 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/023af4cbe1c5d6eb8380/maintainability)](https://codeclimate.com/github/sol-un/php-project-lvl4/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/023af4cbe1c5d6eb8380/test_coverage)](https://codeclimate.com/github/sol-un/php-project-lvl4/test_coverage)
 [![PHP CI Status](https://github.com/sol-un/php-project-lvl4/actions/workflows/workflow.yml/badge.svg)](https://github.com/sol-un/php-project-lvl4/actions/workflows/workflow.yml)
 [![Actions Status](https://github.com/sol-un/php-project-lvl4/workflows/hexlet-check/badge.svg)](https://github.com/sol-un/php-project-lvl4/actions)
 

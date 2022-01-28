@@ -114,7 +114,7 @@ class TaskStatusController extends Controller
             flash(__('taskStatus.errors.delete'))->error();
             return back();
         }
-        
+
         $taskStatus->delete();
         flash(__('taskStatus.messages.delete'))->success();
 

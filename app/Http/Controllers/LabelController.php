@@ -114,7 +114,7 @@ class LabelController extends Controller
             flash(__('label.errors.delete'))->error();
             return back();
         }
-        
+
         $label->delete();
         flash(__('label.messages.delete'))->success();
 

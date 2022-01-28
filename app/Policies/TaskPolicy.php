@@ -66,6 +66,6 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task)
     {
-        return Auth::check() && $user->id === $task->created_by_id;
+        return Auth::check() && $user->is($task->creator);
     }
 }

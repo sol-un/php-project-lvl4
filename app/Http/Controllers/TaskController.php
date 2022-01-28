@@ -149,10 +149,8 @@ class TaskController extends Controller
      */
     public function destroy(Request $request, Task $task)
     {
-        if ($request->user()->can('delete', $task)) {
-            $task->delete();
-            flash(__('task.messages.delete'))->success();
-        }
+        $task->delete();
+        flash(__('task.messages.delete'))->success();
 
         return redirect()
             ->route('tasks.index');

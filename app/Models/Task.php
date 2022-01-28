@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Task.
+ * @property \Illuminate\Database\Eloquent\Model $creator
+ */
 class Task extends Model
 {
     use HasFactory;

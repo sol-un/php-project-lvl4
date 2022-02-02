@@ -37,6 +37,7 @@ class TaskStatusControllerTest extends TestCase
         $taskStatus = TaskStatus::factory()->create();
         $response = $this->actingAs($this->user)->get(route('task_statuses.edit', [$taskStatus]));
         $response->assertOk();
+        $response->assertSee($taskStatus['name']);
     }
 
     public function testStore()
@@ -50,20 +51,26 @@ class TaskStatusControllerTest extends TestCase
         $response->assertRedirect();
 
         $this->assertDatabaseHas('task_statuses', $factoryData);
+
+        $response = $this->get(route('task_statuses.index'));
+        $response->assertSee($factoryData['name']);
     }
 
     public function testUpdate()
     {
         $taskStatus = TaskStatus::factory()->create();
         $factoryData = TaskStatus::factory()
-            ->make(['name' => 'myteststatus'])
-            ->only(['name']);
+        ->make(['name' => 'myteststatus'])
+        ->only(['name']);
 
         $response = $this->actingAs($this->user)->patch(route('task_statuses.update', $taskStatus), $factoryData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
         $this->assertDatabaseHas('task_statuses', $factoryData);
+
+        $response = $this->get(route('task_statuses.index'));
+        $response->assertSee($factoryData['name']);
     }
 
     public function testDestroy()

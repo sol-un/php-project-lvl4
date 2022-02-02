@@ -39,33 +39,40 @@ class LabelControllerTest extends TestCase
         $label = label::factory()->create();
         $response = $this->actingAs($this->user)->get(route('labels.edit', [$label]));
         $response->assertOk();
+        $response->assertSee($label['name']);
     }
 
     public function testStore()
     {
         $factoryData = label::factory()
             ->make(['name' => 'mytestlabel'])
-            ->only(['name']);
+            ->only(['name', 'description']);
 
         $response = $this->actingAs($this->user)->post(route('labels.store'), $factoryData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
         $this->assertDatabaseHas('labels', $factoryData);
+
+        $response = $this->get(route('labels.index'));
+        $response->assertSee($factoryData['name']);
     }
 
     public function testUpdate()
     {
         $label = label::factory()->create();
         $factoryData = label::factory()
-            ->make(['name' => 'mytestlabel'])
-            ->only(['name']);
+        ->make(['name' => 'mytestlabel'])
+        ->only(['name', 'description']);
 
         $response = $this->actingAs($this->user)->patch(route('labels.update', $label), $factoryData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
         $this->assertDatabaseHas('labels', $factoryData);
+
+        $response = $this->get(route('labels.index'));
+        $response->assertSee($factoryData['name']);
     }
 
     public function testDestroy()

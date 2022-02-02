@@ -18,7 +18,7 @@ deploy:
 	git push heroku main
 
 lint:
-	composer phpcs
+	exec composer phpcs
 
 migrate-refresh:
 	php artisan migrate:refresh --seed

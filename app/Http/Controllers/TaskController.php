@@ -149,6 +149,7 @@ class TaskController extends Controller
      */
     public function destroy(Request $request, Task $task)
     {
+        $task->labels()->detach();
         $task->delete();
         flash(__('task.messages.delete'))->success();
 

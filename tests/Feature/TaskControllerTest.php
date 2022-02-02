@@ -29,8 +29,9 @@ class TaskControllerTest extends TestCase
     public function testShow()
     {
         $task = Task::factory()->create();
-        $response = $this->actingAs($this->user)->get(route('tasks.show', $task));
+        $response = $this->get(route('tasks.show', $task));
         $response->assertOk();
+        $response->assertSee([$task['name'], $task['description']]);
     }
 
     public function testCreate()
@@ -44,6 +45,7 @@ class TaskControllerTest extends TestCase
         $task = Task::factory()->create();
         $response = $this->actingAs($this->user)->get(route('tasks.edit', [$task]));
         $response->assertOk();
+        $response->assertSee([$task['name'], $task['description']]);
     }
 
     public function testStore()
@@ -57,20 +59,26 @@ class TaskControllerTest extends TestCase
         $response->assertRedirect();
 
         $this->assertDatabaseHas('tasks', $factoryData);
+
+        $response = $this->get(route('tasks.index'));
+        $response->assertSee($factoryData['name']);
     }
 
     public function testUpdate()
     {
         $task = Task::factory()->create();
         $factoryData = Task::factory()
-            ->make(['name' => 'mytesttask'])
-            ->only(['name', 'description', 'status_id']);
+        ->make(['name' => 'mytesttask'])
+        ->only(['name', 'description', 'status_id']);
 
         $response = $this->actingAs($this->user)->patch(route('tasks.update', $task), $factoryData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
         $this->assertDatabaseHas('tasks', $factoryData);
+
+        $response = $this->get(route('tasks.index'));
+        $response->assertSee($factoryData['name']);
     }
 
     public function testDestroy()

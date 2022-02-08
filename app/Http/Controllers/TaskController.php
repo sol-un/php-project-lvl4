@@ -80,8 +80,10 @@ class TaskController extends Controller
         $task = new Task();
         $task->fill($request->all());
         $task->creator()->associate(Auth::id());
+        if ($request->filled('labels')) {
+            $task->labels()->attach($request->labels);
+        }
         $task->save();
-        $task->labels()->attach($request->labels);
 
         flash(__('task.messages.create'))->success();
         return redirect()

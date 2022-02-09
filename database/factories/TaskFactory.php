@@ -17,7 +17,7 @@ class TaskFactory extends Factory
     {
         return [
             'name' => $this->faker->word(),
-            'description' => $this->faker->paragraph(),
+            'description' => $this->faker->paragraph(1),
             'status_id' => fn () => TaskStatus::all()->random(),
             'created_by_id' => fn () => User::all()->random(),
             'assigned_to_id' => fn () => (bool) rand(0, 1) ? null : User::all()->random(),

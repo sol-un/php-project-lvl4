@@ -69,11 +69,14 @@ class TaskController extends Controller
         $this->validate(
             $request,
             [
-                'name' => 'required|unique:tasks',
+                'name' => 'required|unique:tasks|max:25',
+                'description' => 'max:250',
                 'status_id' => 'required',
             ],
             [
-                'name.unique' => __('task.errors.name_unique')
+                'name.unique' => __('task.errors.name_unique'),
+                'name.max' => __('validation.max'),
+                'description.max' => __('validation.max'),
             ]
         );
 
@@ -127,11 +130,14 @@ class TaskController extends Controller
         $this->validate(
             $request,
             [
-                'name' => 'required|unique:tasks,name,' . $task->id,
+                'name' => 'required|max:25|unique:tasks,name,' . $task->id,
+                'description' => 'max:250',
                 'status_id' => 'required',
             ],
             [
-                'name.unique' => __('task.errors.name_unique')
+                'name.unique' => __('task.errors.name_unique'),
+                'name.max' => __('validation.max'),
+                'description.max' => __('validation.max')
             ]
         );
 

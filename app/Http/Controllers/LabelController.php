@@ -50,10 +50,13 @@ class LabelController extends Controller
         $this->validate(
             $request,
             [
-                'name' => 'required|unique:labels',
+                'name' => 'required|unique:labels|max:25',
+                'description' => 'max:250',
             ],
             [
-                'name.unique' => __('label.errors.name_unique')
+                'name.unique' => __('label.errors.name_unique'),
+                'name.max' => __('validation.max'),
+                'description.max' => __('validation.max')
             ]
         );
 
@@ -88,10 +91,13 @@ class LabelController extends Controller
         $this->validate(
             $request,
             [
-                'name' => 'required|unique:labels,name,' . $label->id,
+                'name' => 'required|max:25|unique:labels,name,' . $label->id,
+                'description' => 'max:250',
             ],
             [
-                'name.unique' => __('label.errors.name_unique')
+                'name.unique' => __('label.errors.name_unique'),
+                'name.max' => __('validation.max'),
+                'description.max' => __('validation.max'),
             ]
         );
 
